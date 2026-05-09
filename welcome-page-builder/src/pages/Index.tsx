@@ -1508,23 +1508,10 @@
 
 import { useState } from "react";
 import {
-  Mail, Search, X, ChevronUp, ChevronDown, ChevronsUpDown,
+  Search, X, ChevronUp, ChevronDown, ChevronsUpDown,
   Briefcase, Building2, GraduationCap, ArrowRight,
   ChevronLeft, ChevronRight, LogIn, Zap,
 } from "lucide-react";
-
-/* ═══════════════════════ PALETTE ════════════════════════════
-   Page bg      #EFF6FF  (blue-50)
-   Surface      #FFFFFF
-   Primary      #2563EB  (blue-600)
-   Primary mid  #3B82F6  (blue-500)
-   Primary lite #DBEAFE  (blue-100)
-   Accent teal  #0EA5E9  (sky-500)
-   Border       #BFDBFE  (blue-200)
-   Text head    #1E3A5F
-   Text body    #334155
-   Text muted   #64748B
-═══════════════════════════════════════════════════════════════ */
 
 const NAV  = ["Home","About Us","Authorised HRs","Core Committee","Services","Projects","Associates","Gallery","Contact Us"];
 const TABS = ["PG & Degree Colleges","Industrial Associates","Entrepreneur Sources","Entrepreneur Network"];
@@ -1537,13 +1524,14 @@ const JOBS = [
   { org:"Service Sector",    n:232, role:"Customer Support / Ops"   },
   { org:"Banks",             n:34,  role:"HR Manager / Executive"   },
 ];
+
 const QUALS = [
-  { label:"SSC",          from:"#F43F5E", to:"#E11D48" },
-  { label:"ITI",          from:"#F59E0B", to:"#D97706" },
-  { label:"Diploma",      from:"#10B981", to:"#059669" },
-  { label:"Intermediate", from:"#3B82F6", to:"#2563EB" },
-  { label:"Degree",       from:"#8B5CF6", to:"#7C3AED" },
-  { label:"PG",           from:"#0EA5E9", to:"#0284C7" },
+  { label:"SSC",          body:"#FFF1F2", border:"#F43F5E", lid:"#F43F5E",  line:"#FECDD3", stamp:"#C81A40" },
+  { label:"ITI",          body:"#FFFBEB", border:"#F59E0B", lid:"#F59E0B",  line:"#FDE68A", stamp:"#D97706" },
+  { label:"Diploma",      body:"#ECFDF5", border:"#10B981", lid:"#10B981",  line:"#A7F3D0", stamp:"#059669" },
+  { label:"Intermediate", body:"#EFF6FF", border:"#3B82F6", lid:"#3B82F6",  line:"#BFDBFE", stamp:"#2563EB" },
+  { label:"Degree",       body:"#F5F3FF", border:"#8B5CF6", lid:"#8B5CF6",  line:"#DDD6FE", stamp:"#7C3AED" },
+  { label:"PG",           body:"#F0F9FF", border:"#0EA5E9", lid:"#0EA5E9",  line:"#BAE6FD", stamp:"#0284C7" },
 ];
 
 const ROW_H   = 54;
@@ -1562,8 +1550,74 @@ const SortIco = ({ on, dir }) =>
   ? <ChevronUp   style={{width:11,height:11,color:"#2563EB",flexShrink:0}}/>
   : <ChevronDown style={{width:11,height:11,color:"#2563EB",flexShrink:0}}/>;
 
-/* card shadow */
 const cardShadow = "0 1px 3px rgba(37,99,235,0.06), 0 8px 24px rgba(37,99,235,0.10), 0 1px 0 rgba(255,255,255,0.9) inset";
+
+/* ══════════════════ ENVELOPE CSS ══════════════════════════ */
+const envStyles = `
+  .env-row{display:flex;gap:18px;align-items:center;flex-wrap:wrap;}
+  .env-wrap{display:flex;flex-direction:column;align-items:center;gap:7px;cursor:pointer;user-select:none;}
+  .env-lbl{font-size:10px;font-weight:700;letter-spacing:.07em;color:#64748B;text-align:center;transition:color .2s;}
+  .env-wrap:hover .env-lbl{color:#1E3A5F;}
+  .env-svg{display:block;transition:transform .22s cubic-bezier(.34,1.56,.64,1);}
+  .env-wrap:hover .env-svg{transform:translateY(-6px) scale(1.07);}
+  .env-wrap:active .env-svg{transform:scale(0.95);}
+  .env-paper{transition:transform .32s cubic-bezier(.34,1.4,.64,1) .05s;}
+  .env-wrap:hover .env-paper{transform:translateY(-18px);}
+  .env-flap{transform-origin:50% 0%;transition:transform .35s cubic-bezier(.34,1.3,.64,1) .1s;}
+  .env-wrap:hover .env-flap{transform:rotateX(-170deg);}
+  .env-arrow{display:flex;align-items:center;margin-left:4px;transition:transform .25s cubic-bezier(.34,1.56,.64,1);}
+  .env-row:hover .env-arrow{transform:translateX(7px);}
+  @keyframes livePulse{0%{transform:scale(1);opacity:.8}70%{transform:scale(2.4);opacity:0}100%{transform:scale(2.4);opacity:0}}
+`;
+
+/* ══════════════════ ENVELOPE COMPONENT ════════════════════ */
+function Envelope({ label, body, border, lid, line, stamp }) {
+  return (
+    <div className="env-wrap" tabIndex={0} aria-label={`${label} data folder`}>
+      <svg className="env-svg" width="70" height="72" viewBox="0 0 70 72" fill="none">
+        {/* paper behind body */}
+        <g className="env-paper">
+          <rect x="16" y="10" width="38" height="44" rx="3" fill="white" stroke={border} strokeWidth=".8"/>
+          <rect x="21" y="17" width="28" height="2" rx="1" fill={line}/>
+          <rect x="21" y="22" width="28" height="2" rx="1" fill={line}/>
+          <rect x="21" y="27" width="20" height="2" rx="1" fill={line}/>
+          <rect x="21" y="32" width="24" height="2" rx="1" fill={line}/>
+          <rect x="21" y="37" width="16" height="2" rx="1" fill={line}/>
+        </g>
+        {/* envelope body */}
+        <rect x="4" y="30" width="62" height="40" rx="4" fill={body}/>
+        <rect x="4" y="30" width="62" height="40" rx="4" stroke={border} strokeWidth="1.2"/>
+        {/* side triangles */}
+        <path d={`M4 70 L35 50 L4 30`} fill={line}/>
+        <path d={`M66 70 L35 50 L66 30`} fill={line}/>
+        {/* bottom fold */}
+        <path d={`M4 70 L35 50 L66 70`} fill={body} style={{filter:"brightness(0.96)"}}/>
+        {/* V crease */}
+        <path d="M4 30 L35 50 L66 30" fill="none" stroke={border} strokeWidth="0.8" opacity=".4"/>
+        {/* flap */}
+        <g className="env-flap">
+          <path d={`M4 30 L35 50 L66 30 Q66 26 62 26 L8 26 Q4 26 4 30 Z`} fill={lid}/>
+        </g>
+        {/* stamp */}
+        <rect x="52" y="33" width="10" height="8" rx="1.5" fill={stamp} opacity=".75"/>
+        <rect x="53" y="34" width="8"  height="6" rx=".8"  fill="white" opacity=".35"/>
+      </svg>
+      <span className="env-lbl">{label}</span>
+    </div>
+  );
+}
+
+/* ══════════════════ BIG ARROW ══════════════════════════════ */
+function BigArrow() {
+  return (
+    <div className="env-arrow">
+      <svg width="38" height="38" viewBox="0 0 38 38" fill="none">
+        <circle cx="19" cy="19" r="18" fill="#DBEAFE" stroke="#93C5FD" strokeWidth="1.2"/>
+        <path d="M10 19 H26 M20 12 L27 19 L20 26" stroke="#2563EB" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
+      </svg>
+    </div>
+  );
+}
 
 /* ═══════════════════════ JOB GRID ══════════════════════════ */
 function JobGrid() {
@@ -1582,52 +1636,28 @@ function JobGrid() {
       ? srt.d==="asc" ? A-B : B-A
       : srt.d==="asc" ? String(A).localeCompare(String(B)) : String(B).localeCompare(String(A));
   });
-
   const totPg = Math.max(1, Math.ceil(srtd.length / PAGE_SZ));
   const sp    = Math.min(pg, totPg-1);
   const rows  = srtd.slice(sp*PAGE_SZ, (sp+1)*PAGE_SZ);
   const pad   = [...rows, ...Array(PAGE_SZ - rows.length).fill(null)];
-
-  const flip = k => { setSrt(p => p.k===k ? {k,d:p.d==="asc"?"desc":"asc"} : {k,d:"asc"}); setPg(0); };
-  const cols = [
+  const flip  = k => { setSrt(p => p.k===k ? {k,d:p.d==="asc"?"desc":"asc"} : {k,d:"asc"}); setPg(0); };
+  const cols  = [
     { lbl:"Organization", k:"org",  w:"37%" },
     { lbl:"Openings",     k:"n",    w:"21%" },
     { lbl:"Role",         k:"role", w:"42%" },
   ];
 
   return (
-    <div style={{
-      borderRadius:20, overflow:"hidden", background:"#FFFFFF",
-      border:"1px solid #BFDBFE",
-      boxShadow: cardShadow,
-    }}>
+    <div style={{borderRadius:20,overflow:"hidden",background:"#FFFFFF",border:"1px solid #BFDBFE",boxShadow:cardShadow}}>
 
-      {/* ── hero header ── */}
-      <div style={{
-        background:"linear-gradient(135deg,#1D4ED8 0%,#2563EB 50%,#3B82F6 100%)",
-        padding:"18px 20px", position:"relative", overflow:"hidden",
-      }}>
-        {/* gloss sheen */}
-        <div style={{position:"absolute",inset:0,
-          background:"linear-gradient(135deg,rgba(255,255,255,0.22) 0%,rgba(255,255,255,0.05) 50%,transparent 100%)",
-          pointerEvents:"none"}}/>
-        {/* decorative circles */}
-        <div style={{position:"absolute",right:-30,top:-30,width:120,height:120,borderRadius:"50%",
-          background:"rgba(255,255,255,0.08)",pointerEvents:"none"}}/>
-        <div style={{position:"absolute",right:60,bottom:-35,width:80,height:80,borderRadius:"50%",
-          background:"rgba(255,255,255,0.06)",pointerEvents:"none"}}/>
-
+      {/* hero header */}
+      <div style={{background:"linear-gradient(135deg,#1D4ED8 0%,#2563EB 50%,#3B82F6 100%)",padding:"18px 20px",position:"relative",overflow:"hidden"}}>
+        <div style={{position:"absolute",inset:0,background:"linear-gradient(135deg,rgba(255,255,255,0.22) 0%,rgba(255,255,255,0.05) 50%,transparent 100%)",pointerEvents:"none"}}/>
+        <div style={{position:"absolute",right:-30,top:-30,width:120,height:120,borderRadius:"50%",background:"rgba(255,255,255,0.08)",pointerEvents:"none"}}/>
+        <div style={{position:"absolute",right:60,bottom:-35,width:80,height:80,borderRadius:"50%",background:"rgba(255,255,255,0.06)",pointerEvents:"none"}}/>
         <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",position:"relative"}}>
-          {/* title */}
           <div style={{display:"flex",alignItems:"center",gap:13}}>
-            <div style={{
-              width:42,height:42,borderRadius:13,
-              background:"rgba(255,255,255,0.2)",
-              border:"1px solid rgba(255,255,255,0.4)",
-              backdropFilter:"blur(8px)",
-              display:"flex",alignItems:"center",justifyContent:"center",
-              boxShadow:"0 4px 12px rgba(0,0,0,0.15),inset 0 1px 0 rgba(255,255,255,0.3)",
-            }}>
+            <div style={{width:42,height:42,borderRadius:13,background:"rgba(255,255,255,0.2)",border:"1px solid rgba(255,255,255,0.4)",backdropFilter:"blur(8px)",display:"flex",alignItems:"center",justifyContent:"center",boxShadow:"0 4px 12px rgba(0,0,0,0.15),inset 0 1px 0 rgba(255,255,255,0.3)"}}>
               <Briefcase style={{width:18,height:18,color:"#fff"}}/>
             </div>
             <div>
@@ -1638,41 +1668,26 @@ function JobGrid() {
               </p>
             </div>
           </div>
-
-          {/* search */}
           <div style={{position:"relative",width:230}}>
-            <Search style={{position:"absolute",left:10,top:"50%",transform:"translateY(-50%)",
-              width:13,height:13,color:"rgba(255,255,255,0.6)"}}/>
+            <Search style={{position:"absolute",left:10,top:"50%",transform:"translateY(-50%)",width:13,height:13,color:"rgba(255,255,255,0.6)"}}/>
             <input type="text" placeholder="Search roles…" value={q}
               onChange={e=>{setQ(e.target.value);setPg(0);}}
-              style={{
-                width:"100%",paddingLeft:30,paddingRight:q?28:12,paddingTop:8,paddingBottom:8,
-                fontSize:12.5,background:"rgba(255,255,255,0.18)",
-                border:"1px solid rgba(255,255,255,0.35)",borderRadius:10,
-                outline:"none",color:"#fff",boxSizing:"border-box",transition:"all 0.2s",
-              }}
+              style={{width:"100%",paddingLeft:30,paddingRight:q?28:12,paddingTop:8,paddingBottom:8,fontSize:12.5,background:"rgba(255,255,255,0.18)",border:"1px solid rgba(255,255,255,0.35)",borderRadius:10,outline:"none",color:"#fff",boxSizing:"border-box",transition:"all 0.2s"}}
               onFocus={e=>{e.target.style.background="rgba(255,255,255,0.28)";e.target.style.borderColor="rgba(255,255,255,0.7)";}}
               onBlur={e=>{e.target.style.background="rgba(255,255,255,0.18)";e.target.style.borderColor="rgba(255,255,255,0.35)";}}
             />
-            {q && <button onClick={()=>{setQ("");setPg(0);}}
-              style={{position:"absolute",right:9,top:"50%",transform:"translateY(-50%)",
-                background:"none",border:"none",cursor:"pointer",padding:0,color:"rgba(255,255,255,0.7)"}}>
+            {q && <button onClick={()=>{setQ("");setPg(0);}} style={{position:"absolute",right:9,top:"50%",transform:"translateY(-50%)",background:"none",border:"none",cursor:"pointer",padding:0,color:"rgba(255,255,255,0.7)"}}>
               <X style={{width:12,height:12}}/>
             </button>}
           </div>
         </div>
       </div>
 
-      {/* ── column headers ── */}
+      {/* column headers */}
       <div style={{display:"flex",background:"#EFF6FF",borderBottom:"1.5px solid #BFDBFE"}}>
         {cols.map(c => (
           <button key={c.k} onClick={()=>flip(c.k)}
-            style={{
-              width:c.w,display:"flex",alignItems:"center",gap:5,
-              padding:"11px 16px",background:"transparent",border:"none",cursor:"pointer",
-              fontSize:10.5,fontWeight:700,letterSpacing:"0.08em",textTransform:"uppercase",
-              color:"#3B82F6",transition:"all 0.15s",
-            }}
+            style={{width:c.w,display:"flex",alignItems:"center",gap:5,padding:"11px 16px",background:"transparent",border:"none",cursor:"pointer",fontSize:10.5,fontWeight:700,letterSpacing:"0.08em",textTransform:"uppercase",color:"#3B82F6",transition:"all 0.15s"}}
             onMouseEnter={e=>{e.currentTarget.style.background="#DBEAFE";e.currentTarget.style.color="#1D4ED8";}}
             onMouseLeave={e=>{e.currentTarget.style.background="transparent";e.currentTarget.style.color="#3B82F6";}}>
             {c.lbl}<SortIco on={srt.k===c.k} dir={srt.d}/>
@@ -1680,70 +1695,30 @@ function JobGrid() {
         ))}
       </div>
 
-      {/* ── fixed-height body ── */}
+      {/* body */}
       <div style={{height:TABLE_H,overflow:"hidden"}}>
-        {pad.map((row, i) => {
-          const even = i % 2 === 0;
-          if (!row) return (
-            <div key={`p${i}`} style={{
-              height:ROW_H,display:"flex",
-              background: even ? "#FFFFFF" : "#F8FBFF",
-              borderBottom:"1px solid #F0F7FF",
-            }}/>
-          );
+        {pad.map((row,i) => {
+          const even = i%2===0;
+          if (!row) return <div key={`p${i}`} style={{height:ROW_H,display:"flex",background:even?"#FFFFFF":"#F8FBFF",borderBottom:"1px solid #F0F7FF"}}/>;
           const t = tier(row.n);
           return (
-            <div key={i} style={{
-              height:ROW_H,display:"flex",alignItems:"center",
-              background: even ? "#FFFFFF" : "#F8FBFF",
-              borderBottom:"1px solid #EFF6FF",
-              cursor:"pointer",transition:"background 0.15s",
-            }}
-            onMouseEnter={e=>e.currentTarget.style.background="#EFF6FF"}
-            onMouseLeave={e=>e.currentTarget.style.background=even?"#FFFFFF":"#F8FBFF"}>
-
-              {/* org */}
+            <div key={i} style={{height:ROW_H,display:"flex",alignItems:"center",background:even?"#FFFFFF":"#F8FBFF",borderBottom:"1px solid #EFF6FF",cursor:"pointer",transition:"background 0.15s"}}
+              onMouseEnter={e=>e.currentTarget.style.background="#EFF6FF"}
+              onMouseLeave={e=>e.currentTarget.style.background=even?"#FFFFFF":"#F8FBFF"}>
               <div style={{width:"37%",padding:"0 16px",display:"flex",alignItems:"center",gap:10}}>
-                <div style={{
-                  width:30,height:30,borderRadius:9,flexShrink:0,
-                  background:"linear-gradient(135deg,#DBEAFE,#BFDBFE)",
-                  border:"1px solid #93C5FD",
-                  display:"flex",alignItems:"center",justifyContent:"center",
-                  boxShadow:"inset 0 1px 0 rgba(255,255,255,0.8)",
-                }}>
+                <div style={{width:30,height:30,borderRadius:9,flexShrink:0,background:"linear-gradient(135deg,#DBEAFE,#BFDBFE)",border:"1px solid #93C5FD",display:"flex",alignItems:"center",justifyContent:"center",boxShadow:"inset 0 1px 0 rgba(255,255,255,0.8)"}}>
                   <Building2 style={{width:13,height:13,color:"#2563EB"}}/>
                 </div>
-                <span style={{fontSize:13,fontWeight:600,color:"#1E3A5F",
-                  overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>
-                  {row.org}
-                </span>
+                <span style={{fontSize:13,fontWeight:600,color:"#1E3A5F",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{row.org}</span>
               </div>
-
-              {/* vacancies */}
               <div style={{width:"21%",padding:"0 16px"}}>
-                <span style={{
-                  display:"inline-block",padding:"3px 11px",borderRadius:99,
-                  fontSize:11.5,fontWeight:700,
-                  background:`linear-gradient(135deg,${t.a},${t.b})`,
-                  color:t.txt,boxShadow:`0 2px 10px ${t.glow}`,letterSpacing:"0.02em",
-                }}>
-                  {row.n}
-                </span>
+                <span style={{display:"inline-block",padding:"3px 11px",borderRadius:99,fontSize:11.5,fontWeight:700,background:`linear-gradient(135deg,${t.a},${t.b})`,color:t.txt,boxShadow:`0 2px 10px ${t.glow}`,letterSpacing:"0.02em"}}>{row.n}</span>
                 <div style={{height:3,background:"#DBEAFE",borderRadius:99,marginTop:6,width:"78%",overflow:"hidden"}}>
-                  <div style={{
-                    height:"100%",borderRadius:99,
-                    background:`linear-gradient(90deg,${t.a},${t.bar})`,
-                    width:`${(row.n/MAX_V)*100}%`,
-                    transition:"width 0.4s ease",
-                  }}/>
+                  <div style={{height:"100%",borderRadius:99,background:`linear-gradient(90deg,${t.a},${t.bar})`,width:`${(row.n/MAX_V)*100}%`,transition:"width 0.4s ease"}}/>
                 </div>
               </div>
-
-              {/* role */}
               <div style={{width:"42%",padding:"0 16px",display:"flex",alignItems:"center",justifyContent:"space-between"}}>
-                <span style={{fontSize:13,color:"#64748B",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>
-                  {row.role}
-                </span>
+                <span style={{fontSize:13,color:"#64748B",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{row.role}</span>
                 <ArrowRight style={{width:13,height:13,color:"#93C5FD",flexShrink:0}}/>
               </div>
             </div>
@@ -1751,63 +1726,29 @@ function JobGrid() {
         })}
       </div>
 
-      {/* ── pagination ── */}
-      <div style={{
-        display:"flex",alignItems:"center",justifyContent:"space-between",
-        padding:"10px 20px",background:"#EFF6FF",
-        borderTop:"1.5px solid #BFDBFE",
-      }}>
+      {/* pagination */}
+      <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",padding:"10px 20px",background:"#EFF6FF",borderTop:"1.5px solid #BFDBFE"}}>
         <p style={{margin:0,fontSize:12,color:"#64748B"}}>
           Showing{" "}
-          <span style={{fontWeight:700,color:"#2563EB"}}>
-            {srtd.length===0?0:sp*PAGE_SZ+1}–{Math.min((sp+1)*PAGE_SZ,srtd.length)}
-          </span>
+          <span style={{fontWeight:700,color:"#2563EB"}}>{srtd.length===0?0:sp*PAGE_SZ+1}–{Math.min((sp+1)*PAGE_SZ,srtd.length)}</span>
           {" of "}
           <span style={{fontWeight:700,color:"#334155"}}>{srtd.length}</span>
         </p>
-
         <div style={{display:"flex",alignItems:"center",gap:5}}>
-          {/* prev */}
           <button disabled={sp===0} onClick={()=>setPg(p=>p-1)}
-            style={{
-              width:30,height:30,borderRadius:9,display:"flex",alignItems:"center",justifyContent:"center",
-              background:sp===0?"#F1F5F9":"#FFFFFF",
-              border:"1.5px solid",borderColor:sp===0?"#E2E8F0":"#BFDBFE",
-              cursor:sp===0?"not-allowed":"pointer",opacity:sp===0?0.4:1,
-              boxShadow:sp===0?"none":"0 1px 4px rgba(37,99,235,0.10)",
-              transition:"all 0.15s",
-            }}
+            style={{width:30,height:30,borderRadius:9,display:"flex",alignItems:"center",justifyContent:"center",background:sp===0?"#F1F5F9":"#FFFFFF",border:"1.5px solid",borderColor:sp===0?"#E2E8F0":"#BFDBFE",cursor:sp===0?"not-allowed":"pointer",opacity:sp===0?0.4:1,transition:"all 0.15s"}}
             onMouseEnter={e=>sp!==0&&(e.currentTarget.style.background="#DBEAFE")}
             onMouseLeave={e=>{e.currentTarget.style.background=sp===0?"#F1F5F9":"#FFFFFF";}}>
             <ChevronLeft style={{width:14,height:14,color:"#2563EB"}}/>
           </button>
-
-          {/* page numbers */}
           {Array.from({length:totPg},(_,n)=>(
             <button key={n} onClick={()=>setPg(n)}
-              style={{
-                width:30,height:30,borderRadius:9,
-                display:"flex",alignItems:"center",justifyContent:"center",
-                fontSize:12,fontWeight:700,cursor:"pointer",transition:"all 0.15s",
-                background: n===sp ? "linear-gradient(135deg,#2563EB,#3B82F6)" : "#FFFFFF",
-                border: n===sp ? "1.5px solid #2563EB" : "1.5px solid #BFDBFE",
-                color: n===sp ? "#fff" : "#3B82F6",
-                boxShadow: n===sp ? "0 3px 10px rgba(37,99,235,0.35)" : "0 1px 3px rgba(37,99,235,0.08)",
-              }}>
+              style={{width:30,height:30,borderRadius:9,display:"flex",alignItems:"center",justifyContent:"center",fontSize:12,fontWeight:700,cursor:"pointer",transition:"all 0.15s",background:n===sp?"linear-gradient(135deg,#2563EB,#3B82F6)":"#FFFFFF",border:n===sp?"1.5px solid #2563EB":"1.5px solid #BFDBFE",color:n===sp?"#fff":"#3B82F6",boxShadow:n===sp?"0 3px 10px rgba(37,99,235,0.35)":"0 1px 3px rgba(37,99,235,0.08)"}}>
               {n+1}
             </button>
           ))}
-
-          {/* next */}
           <button disabled={sp>=totPg-1} onClick={()=>setPg(p=>p+1)}
-            style={{
-              width:30,height:30,borderRadius:9,display:"flex",alignItems:"center",justifyContent:"center",
-              background:sp>=totPg-1?"#F1F5F9":"#FFFFFF",
-              border:"1.5px solid",borderColor:sp>=totPg-1?"#E2E8F0":"#BFDBFE",
-              cursor:sp>=totPg-1?"not-allowed":"pointer",opacity:sp>=totPg-1?0.4:1,
-              boxShadow:sp>=totPg-1?"none":"0 1px 4px rgba(37,99,235,0.10)",
-              transition:"all 0.15s",
-            }}
+            style={{width:30,height:30,borderRadius:9,display:"flex",alignItems:"center",justifyContent:"center",background:sp>=totPg-1?"#F1F5F9":"#FFFFFF",border:"1.5px solid",borderColor:sp>=totPg-1?"#E2E8F0":"#BFDBFE",cursor:sp>=totPg-1?"not-allowed":"pointer",opacity:sp>=totPg-1?0.4:1,transition:"all 0.15s"}}
             onMouseEnter={e=>sp<totPg-1&&(e.currentTarget.style.background="#DBEAFE")}
             onMouseLeave={e=>{e.currentTarget.style.background=sp>=totPg-1?"#F1F5F9":"#FFFFFF";}}>
             <ChevronRight style={{width:14,height:14,color:"#2563EB"}}/>
@@ -1819,79 +1760,37 @@ function JobGrid() {
 }
 
 /* ═══════════════════════ LOGIN CARD ════════════════════════ */
-function LoginCard({ title, sub, gradA, gradB, accentBorder, accentBg, accentText, btnGlow, fields }) {
+function LoginCard({ title, sub, gradA, gradB, accentBorder, accentBg, btnGlow, fields }) {
   const [v, setV] = useState(["", ""]);
   return (
-    <div style={{
-      borderRadius:20,overflow:"hidden",background:"#FFFFFF",
-      border:`1px solid ${accentBorder}`,
-      boxShadow: cardShadow,
-    }}>
-      {/* gradient header */}
-      <div style={{
-        background:`linear-gradient(135deg,${gradA},${gradB})`,
-        padding:"20px 18px 17px",position:"relative",overflow:"hidden",
-      }}>
-        <div style={{position:"absolute",inset:0,
-          background:"linear-gradient(135deg,rgba(255,255,255,0.22) 0%,rgba(255,255,255,0.04) 60%,transparent 100%)",
-          pointerEvents:"none"}}/>
-        <div style={{position:"absolute",right:-18,top:-18,width:80,height:80,borderRadius:"50%",
-          background:"rgba(255,255,255,0.10)",pointerEvents:"none"}}/>
-        <div style={{
-          width:38,height:38,borderRadius:12,marginBottom:12,
-          background:"rgba(255,255,255,0.22)",border:"1px solid rgba(255,255,255,0.45)",
-          backdropFilter:"blur(8px)",
-          display:"flex",alignItems:"center",justifyContent:"center",position:"relative",
-          boxShadow:"0 3px 10px rgba(0,0,0,0.12),inset 0 1px 0 rgba(255,255,255,0.35)",
-        }}>
+    <div style={{borderRadius:20,overflow:"hidden",background:"#FFFFFF",border:`1px solid ${accentBorder}`,boxShadow:cardShadow}}>
+      <div style={{background:`linear-gradient(135deg,${gradA},${gradB})`,padding:"20px 18px 17px",position:"relative",overflow:"hidden"}}>
+        <div style={{position:"absolute",inset:0,background:"linear-gradient(135deg,rgba(255,255,255,0.22) 0%,rgba(255,255,255,0.04) 60%,transparent 100%)",pointerEvents:"none"}}/>
+        <div style={{position:"absolute",right:-18,top:-18,width:80,height:80,borderRadius:"50%",background:"rgba(255,255,255,0.10)",pointerEvents:"none"}}/>
+        <div style={{width:38,height:38,borderRadius:12,marginBottom:12,background:"rgba(255,255,255,0.22)",border:"1px solid rgba(255,255,255,0.45)",backdropFilter:"blur(8px)",display:"flex",alignItems:"center",justifyContent:"center",position:"relative",boxShadow:"0 3px 10px rgba(0,0,0,0.12),inset 0 1px 0 rgba(255,255,255,0.35)"}}>
           <LogIn style={{width:16,height:16,color:"#fff"}}/>
         </div>
-        <p style={{margin:0,fontSize:14,fontWeight:700,color:"#fff",letterSpacing:"-0.2px",position:"relative"}}>
-          {title}
-        </p>
+        <p style={{margin:0,fontSize:14,fontWeight:700,color:"#fff",letterSpacing:"-0.2px",position:"relative"}}>{title}</p>
         <p style={{margin:"3px 0 0",fontSize:11,color:"rgba(255,255,255,0.72)",position:"relative"}}>{sub}</p>
       </div>
-
-      {/* body */}
       <div style={{padding:"18px 16px 20px",display:"flex",flexDirection:"column",gap:10}}>
         {fields.map((f,i) => (
           <input key={i} type={f.t} placeholder={f.ph} value={v[i]}
             onChange={e=>setV(x=>x.map((c,j)=>j===i?e.target.value:c))}
-            style={{
-              width:"100%",padding:"9px 13px",fontSize:13,boxSizing:"border-box",
-              background:"#F8FBFF",border:"1.5px solid #BFDBFE",
-              borderRadius:10,outline:"none",color:"#1E3A5F",transition:"all 0.2s",
-            }}
+            style={{width:"100%",padding:"9px 13px",fontSize:13,boxSizing:"border-box",background:"#F8FBFF",border:"1.5px solid #BFDBFE",borderRadius:10,outline:"none",color:"#1E3A5F",transition:"all 0.2s"}}
             onFocus={e=>{e.target.style.borderColor=gradA;e.target.style.background="#EFF6FF";e.target.style.boxShadow=`0 0 0 3px ${accentBg}`;}}
             onBlur={e=>{e.target.style.borderColor="#BFDBFE";e.target.style.background="#F8FBFF";e.target.style.boxShadow="none";}}
           />
         ))}
-
-        {/* glossy CTA */}
-        <button style={{
-          width:"100%",padding:"10px",marginTop:2,
-          background:`linear-gradient(135deg,${gradA},${gradB})`,
-          color:"#fff",fontWeight:700,fontSize:13,
-          border:"none",borderRadius:11,cursor:"pointer",
-          position:"relative",overflow:"hidden",
-          boxShadow:`0 4px 16px ${btnGlow}`,
-          transition:"transform 0.15s,box-shadow 0.15s",
-        }}
-        onMouseEnter={e=>{e.currentTarget.style.transform="translateY(-1.5px)";e.currentTarget.style.boxShadow=`0 8px 22px ${btnGlow}`;}}
-        onMouseLeave={e=>{e.currentTarget.style.transform="none";e.currentTarget.style.boxShadow=`0 4px 16px ${btnGlow}`;}}
-        onMouseDown={e=>e.currentTarget.style.transform="scale(0.97)"}
-        onMouseUp={e=>e.currentTarget.style.transform="translateY(-1.5px)"}>
-          <div style={{position:"absolute",inset:0,
-            background:"linear-gradient(135deg,rgba(255,255,255,0.2) 0%,transparent 60%)",pointerEvents:"none"}}/>
+        <button style={{width:"100%",padding:"10px",marginTop:2,background:`linear-gradient(135deg,${gradA},${gradB})`,color:"#fff",fontWeight:700,fontSize:13,border:"none",borderRadius:11,cursor:"pointer",position:"relative",overflow:"hidden",boxShadow:`0 4px 16px ${btnGlow}`,transition:"transform 0.15s,box-shadow 0.15s"}}
+          onMouseEnter={e=>{e.currentTarget.style.transform="translateY(-1.5px)";e.currentTarget.style.boxShadow=`0 8px 22px ${btnGlow}`;}}
+          onMouseLeave={e=>{e.currentTarget.style.transform="none";e.currentTarget.style.boxShadow=`0 4px 16px ${btnGlow}`;}}
+          onMouseDown={e=>e.currentTarget.style.transform="scale(0.97)"}
+          onMouseUp={e=>e.currentTarget.style.transform="translateY(-1.5px)"}>
+          <div style={{position:"absolute",inset:0,background:"linear-gradient(135deg,rgba(255,255,255,0.2) 0%,transparent 60%)",pointerEvents:"none"}}/>
           <span style={{position:"relative"}}>Sign In →</span>
         </button>
-
-        <p style={{
-          margin:"4px 0 0",fontSize:10.5,color:"#94A3B8",lineHeight:1.6,
-          borderTop:"1px solid #EFF6FF",paddingTop:10,
-        }}>
-          {fields[0].note}
-        </p>
+        <p style={{margin:"4px 0 0",fontSize:10.5,color:"#94A3B8",lineHeight:1.6,borderTop:"1px solid #EFF6FF",paddingTop:10}}>{fields[0].note}</p>
       </div>
     </div>
   );
@@ -1900,49 +1799,33 @@ function LoginCard({ title, sub, gradA, gradB, accentBorder, accentBg, accentTex
 /* ═════════════════════════ ROOT ════════════════════════════ */
 export default function Index() {
   return (
-    <div style={{
-      minHeight:"100vh",fontFamily:"'Inter',system-ui,sans-serif",
-      background:"linear-gradient(160deg,#EFF6FF 0%,#DBEAFE 35%,#EFF6FF 65%,#F0F9FF 100%)",
-      position:"relative",
-    }}>
-      {/* subtle ambient blobs */}
+    <div style={{minHeight:"100vh",fontFamily:"'Inter',system-ui,sans-serif",background:"linear-gradient(160deg,#EFF6FF 0%,#DBEAFE 35%,#EFF6FF 65%,#F0F9FF 100%)",position:"relative"}}>
+
+      <style>{envStyles}</style>
+
+      {/* ambient blobs */}
       <div style={{position:"absolute",inset:0,overflow:"hidden",pointerEvents:"none",zIndex:0}}>
-        <div style={{position:"absolute",width:700,height:500,borderRadius:"50%",top:-200,left:-200,
-          background:"radial-gradient(ellipse,rgba(147,197,253,0.35) 0%,transparent 70%)"}}/>
-        <div style={{position:"absolute",width:500,height:500,borderRadius:"50%",bottom:-150,right:-100,
-          background:"radial-gradient(ellipse,rgba(186,230,253,0.40) 0%,transparent 70%)"}}/>
-        <div style={{position:"absolute",width:400,height:400,borderRadius:"50%",top:"30%",right:"15%",
-          background:"radial-gradient(ellipse,rgba(219,234,254,0.50) 0%,transparent 70%)"}}/>
+        <div style={{position:"absolute",width:700,height:500,borderRadius:"50%",top:-200,left:-200,background:"radial-gradient(ellipse,rgba(147,197,253,0.35) 0%,transparent 70%)"}}/>
+        <div style={{position:"absolute",width:500,height:500,borderRadius:"50%",bottom:-150,right:-100,background:"radial-gradient(ellipse,rgba(186,230,253,0.40) 0%,transparent 70%)"}}/>
+        <div style={{position:"absolute",width:400,height:400,borderRadius:"50%",top:"30%",right:"15%",background:"radial-gradient(ellipse,rgba(219,234,254,0.50) 0%,transparent 70%)"}}/>
       </div>
 
       <div style={{position:"relative",zIndex:1}}>
 
         {/* ════ HEADER ════ */}
-        <header style={{
-          background:"rgba(255,255,255,0.82)",
-          backdropFilter:"blur(20px)",WebkitBackdropFilter:"blur(20px)",
-          borderBottom:"1px solid #BFDBFE",
-          boxShadow:"0 2px 20px rgba(37,99,235,0.09)",
-        }}>
-          <div style={{maxWidth:1300,margin:"0 auto",padding:"13px 28px",
-            display:"flex",alignItems:"center",gap:16,flexWrap:"wrap"}}>
+        <header style={{background:"rgba(255,255,255,0.82)",backdropFilter:"blur(20px)",WebkitBackdropFilter:"blur(20px)",borderBottom:"1px solid #BFDBFE",boxShadow:"0 2px 20px rgba(37,99,235,0.09)"}}>
+          <div style={{maxWidth:1300,margin:"0 auto",padding:"13px 28px",display:"flex",alignItems:"center",gap:16,flexWrap:"wrap"}}>
 
             {/* logo */}
             <div style={{display:"flex",alignItems:"center",gap:13,flexShrink:0}}>
-              <div style={{
-                width:46,height:46,borderRadius:15,position:"relative",overflow:"hidden",
-                background:"linear-gradient(135deg,#2563EB,#1D4ED8)",
-                boxShadow:"0 0 0 1px rgba(37,99,235,0.3),0 6px 18px rgba(37,99,235,0.35),inset 0 1px 0 rgba(255,255,255,0.25)",
-              }}>
-                <div style={{position:"absolute",inset:0,
-                  background:"linear-gradient(135deg,rgba(255,255,255,0.22) 0%,transparent 60%)"}}/>
+              <div style={{width:46,height:46,borderRadius:15,position:"relative",overflow:"hidden",background:"linear-gradient(135deg,#2563EB,#1D4ED8)",boxShadow:"0 0 0 1px rgba(37,99,235,0.3),0 6px 18px rgba(37,99,235,0.35),inset 0 1px 0 rgba(255,255,255,0.25)"}}>
+                <div style={{position:"absolute",inset:0,background:"linear-gradient(135deg,rgba(255,255,255,0.22) 0%,transparent 60%)"}}/>
                 <div style={{position:"absolute",inset:0,display:"flex",alignItems:"center",justifyContent:"center"}}>
                   <span style={{color:"#fff",fontWeight:800,fontSize:17,letterSpacing:"-0.5px"}}>HR</span>
                 </div>
               </div>
               <div>
-                <p style={{margin:0,fontSize:9.5,color:"#3B82F6",fontWeight:800,
-                  letterSpacing:"0.17em",textTransform:"uppercase"}}>Connect Portal</p>
+                <p style={{margin:0,fontSize:9.5,color:"#3B82F6",fontWeight:800,letterSpacing:"0.17em",textTransform:"uppercase"}}>Connect Portal</p>
                 <p style={{margin:0,fontSize:16,color:"#1E3A5F",fontWeight:800,letterSpacing:"-0.4px"}}>HR Network</p>
               </div>
             </div>
@@ -1952,69 +1835,33 @@ export default function Index() {
             {/* tabs */}
             <div style={{display:"flex",flexWrap:"wrap",gap:7}}>
               {TABS.map((t,i) => (
-                <button key={i} style={{
-                  padding:"5px 14px",fontSize:11.5,fontWeight:600,
-                  color:"#2563EB",background:"rgba(219,234,254,0.7)",
-                  border:"1px solid #93C5FD",borderRadius:99,cursor:"pointer",
-                  boxShadow:"inset 0 1px 0 rgba(255,255,255,0.8)",
-                  transition:"all 0.15s",
-                }}
-                onMouseEnter={e=>{e.currentTarget.style.background="#BFDBFE";e.currentTarget.style.transform="translateY(-1px)";e.currentTarget.style.boxShadow="0 2px 8px rgba(37,99,235,0.15),inset 0 1px 0 rgba(255,255,255,0.8)";}}
-                onMouseLeave={e=>{e.currentTarget.style.background="rgba(219,234,254,0.7)";e.currentTarget.style.transform="none";e.currentTarget.style.boxShadow="inset 0 1px 0 rgba(255,255,255,0.8)";}}>
+                <button key={i} style={{padding:"5px 14px",fontSize:11.5,fontWeight:600,color:"#2563EB",background:"rgba(219,234,254,0.7)",border:"1px solid #93C5FD",borderRadius:99,cursor:"pointer",boxShadow:"inset 0 1px 0 rgba(255,255,255,0.8)",transition:"all 0.15s"}}
+                  onMouseEnter={e=>{e.currentTarget.style.background="#BFDBFE";e.currentTarget.style.transform="translateY(-1px)";e.currentTarget.style.boxShadow="0 2px 8px rgba(37,99,235,0.15),inset 0 1px 0 rgba(255,255,255,0.8)";}}
+                  onMouseLeave={e=>{e.currentTarget.style.background="rgba(219,234,254,0.7)";e.currentTarget.style.transform="none";e.currentTarget.style.boxShadow="inset 0 1px 0 rgba(255,255,255,0.8)";}}>
                   {t}
                 </button>
               ))}
             </div>
 
-{/* live dot — animated */}
-<div style={{marginLeft:"auto",display:"flex",alignItems:"center",gap:7,flexShrink:0,
-  background:"rgba(220,252,231,0.7)",border:"1px solid #86EFAC",
-  padding:"4px 10px 4px 7px",borderRadius:99,
-  boxShadow:"0 1px 6px rgba(34,197,94,0.12)",
-}}>
-  {/* pulsing rings */}
-  <div style={{position:"relative",width:10,height:10,flexShrink:0}}>
-    <div style={{
-      position:"absolute",inset:0,borderRadius:"50%",background:"#22C55E",
-      animation:"livePulse 1.6s ease-out infinite",
-    }}/>
-    <div style={{
-      position:"absolute",inset:0,borderRadius:"50%",background:"#22C55E",
-      animation:"livePulse 1.6s ease-out infinite 0.5s",
-    }}/>
-    <div style={{
-      position:"absolute",inset:"2px",borderRadius:"50%",background:"#16A34A",
-      boxShadow:"0 0 4px rgba(22,163,74,0.6)",
-    }}/>
-  </div>
-  <span style={{fontSize:10.5,color:"#15803D",fontWeight:800,letterSpacing:"0.1em"}}>LIVE</span>
-  <style>{`
-    @keyframes livePulse {
-      0%   { transform: scale(1);   opacity: 0.8; }
-      70%  { transform: scale(2.4); opacity: 0;   }
-      100% { transform: scale(2.4); opacity: 0;   }
-    }
-  `}</style>
-</div>
+            {/* live dot */}
+            <div style={{marginLeft:"auto",display:"flex",alignItems:"center",gap:7,flexShrink:0,background:"rgba(220,252,231,0.7)",border:"1px solid #86EFAC",padding:"4px 10px 4px 7px",borderRadius:99,boxShadow:"0 1px 6px rgba(34,197,94,0.12)"}}>
+              <div style={{position:"relative",width:10,height:10,flexShrink:0}}>
+                <div style={{position:"absolute",inset:0,borderRadius:"50%",background:"#22C55E",animation:"livePulse 1.6s ease-out infinite"}}/>
+                <div style={{position:"absolute",inset:0,borderRadius:"50%",background:"#22C55E",animation:"livePulse 1.6s ease-out infinite 0.5s"}}/>
+                <div style={{position:"absolute",inset:"2px",borderRadius:"50%",background:"#16A34A",boxShadow:"0 0 4px rgba(22,163,74,0.6)"}}/>
+              </div>
+              <span style={{fontSize:10.5,color:"#15803D",fontWeight:800,letterSpacing:"0.1em"}}>LIVE</span>
+            </div>
           </div>
         </header>
 
         {/* ════ NAVBAR ════ */}
-        <nav style={{
-          background:"rgba(255,255,255,0.75)",
-          backdropFilter:"blur(14px)",WebkitBackdropFilter:"blur(14px)",
-          borderBottom:"1px solid #DBEAFE",
-        }}>
+        <nav style={{background:"rgba(255,255,255,0.75)",backdropFilter:"blur(14px)",WebkitBackdropFilter:"blur(14px)",borderBottom:"1px solid #DBEAFE"}}>
           <div style={{maxWidth:1300,margin:"0 auto",padding:"5px 28px",display:"flex",flexWrap:"wrap",gap:2}}>
             {NAV.map((lk,i) => (
-              <a key={i} href="#" style={{
-                padding:"6px 13px",fontSize:10.5,fontWeight:700,
-                color:"#3B82F6",letterSpacing:"0.06em",
-                textDecoration:"none",borderRadius:8,textTransform:"uppercase",
-                transition:"all 0.15s",
-              }}
-              onMouseEnter={e=>{e.currentTarget.style.background="#DBEAFE";e.currentTarget.style.color="#1D4ED8";}}
-              onMouseLeave={e=>{e.currentTarget.style.background="transparent";e.currentTarget.style.color="#3B82F6";}}>
+              <a key={i} href="#" style={{padding:"6px 13px",fontSize:10.5,fontWeight:700,color:"#3B82F6",letterSpacing:"0.06em",textDecoration:"none",borderRadius:8,textTransform:"uppercase",transition:"all 0.15s"}}
+                onMouseEnter={e=>{e.currentTarget.style.background="#DBEAFE";e.currentTarget.style.color="#1D4ED8";}}
+                onMouseLeave={e=>{e.currentTarget.style.background="transparent";e.currentTarget.style.color="#3B82F6";}}>
                 {lk}
               </a>
             ))}
@@ -2022,27 +1869,20 @@ export default function Index() {
         </nav>
 
         {/* ════ MAIN GRID ════ */}
-        <main style={{
-          maxWidth:1300,margin:"0 auto",padding:"26px 28px",
-          display:"grid",gridTemplateColumns:"1fr 1fr 3fr",gap:22,alignItems:"start",
-        }}>
+        <main style={{maxWidth:1300,margin:"0 auto",padding:"26px 28px",display:"grid",gridTemplateColumns:"1fr 1fr 3fr",gap:22,alignItems:"start"}}>
           <LoginCard
-            title="Authorised HR Login"
-            sub="Access your HR dashboard"
+            title="Authorised HR Login" sub="Access your HR dashboard"
             gradA="#1D4ED8" gradB="#3B82F6"
-            accentBorder="#BFDBFE" accentBg="rgba(219,234,254,0.5)" accentText="#1D4ED8"
-            btnGlow="rgba(37,99,235,0.40)"
+            accentBorder="#BFDBFE" accentBg="rgba(219,234,254,0.5)" btnGlow="rgba(37,99,235,0.40)"
             fields={[
               {t:"text",     ph:"HR ID No.",      note:"Declaration Form & Security Insurance ECS required for activation."},
               {t:"password", ph:"Password",        note:""},
             ]}
           />
           <LoginCard
-            title="Employer Login"
-            sub="Post staff requirements"
+            title="Employer Login" sub="Post staff requirements"
             gradA="#0284C7" gradB="#0EA5E9"
-            accentBorder="#BAE6FD" accentBg="rgba(186,230,253,0.45)" accentText="#0284C7"
-            btnGlow="rgba(14,165,233,0.40)"
+            accentBorder="#BAE6FD" accentBg="rgba(186,230,253,0.45)" btnGlow="rgba(14,165,233,0.40)"
             fields={[
               {t:"text",     ph:"Employer ID No.", note:"Organization Profile required. Terms & conditions apply."},
               {t:"password", ph:"Password",         note:""},
@@ -2053,52 +1893,20 @@ export default function Index() {
 
         {/* ════ FOOTER ════ */}
         <footer style={{maxWidth:1300,margin:"0 auto",padding:"0 28px 36px"}}>
-          <div style={{
-            borderRadius:22,padding:"22px 28px",
-            display:"flex",flexWrap:"wrap",alignItems:"center",justifyContent:"space-between",gap:20,
-            background:"rgba(255,255,255,0.82)",
-            backdropFilter:"blur(20px)",WebkitBackdropFilter:"blur(20px)",
-            border:"1px solid #BFDBFE",
-            boxShadow:"0 4px 24px rgba(37,99,235,0.09),inset 0 1px 0 rgba(255,255,255,0.9)",
-          }}>
+          <div style={{borderRadius:22,padding:"22px 28px",display:"flex",flexWrap:"wrap",alignItems:"center",justifyContent:"space-between",gap:20,background:"rgba(255,255,255,0.82)",backdropFilter:"blur(20px)",WebkitBackdropFilter:"blur(20px)",border:"1px solid #BFDBFE",boxShadow:"0 4px 24px rgba(37,99,235,0.09),inset 0 1px 0 rgba(255,255,255,0.9)"}}>
 
-            {/* qual folders */}
+            {/* envelope folders */}
             <div>
-              <p style={{margin:"0 0 12px",fontSize:10,fontWeight:800,color:"#93C5FD",
-                letterSpacing:"0.1em",textTransform:"uppercase",display:"flex",alignItems:"center",gap:6}}>
+              <p style={{margin:"0 0 16px",fontSize:10,fontWeight:800,color:"#93C5FD",letterSpacing:"0.1em",textTransform:"uppercase",display:"flex",alignItems:"center",gap:6}}>
                 <GraduationCap style={{width:12,height:12,color:"#3B82F6"}}/>
                 Qualification-wise Data Folders
               </p>
-              <div style={{display:"flex",gap:11,alignItems:"flex-end",flexWrap:"wrap"}}>
-                {QUALS.map((q,i) => (
-                  <button key={i} style={{background:"none",border:"none",cursor:"pointer",padding:0}}>
-                    <div style={{
-                      width:60,height:60,borderRadius:14,
-                      background:`linear-gradient(135deg,${q.from},${q.to})`,
-                      boxShadow:`0 4px 14px ${q.from}44,inset 0 1px 0 rgba(255,255,255,0.25)`,
-                      display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",gap:4,
-                      position:"relative",overflow:"hidden",
-                      transition:"transform 0.2s,box-shadow 0.2s",
-                    }}
-                    onMouseEnter={e=>{e.currentTarget.style.transform="translateY(-4px) scale(1.07)";e.currentTarget.style.boxShadow=`0 10px 22px ${q.from}55`;}}
-                    onMouseLeave={e=>{e.currentTarget.style.transform="none";e.currentTarget.style.boxShadow=`0 4px 14px ${q.from}44`;}}>
-                      <div style={{position:"absolute",inset:0,
-                        background:"linear-gradient(135deg,rgba(255,255,255,0.22) 0%,transparent 60%)"}}/>
-                      <Mail style={{width:16,height:16,color:"#fff",position:"relative",flexShrink:0}}/>
-                      <span style={{
-                        fontSize:9,fontWeight:800,color:"#fff",position:"relative",
-                        letterSpacing:"0.03em",textAlign:"center",lineHeight:1,
-                        textShadow:"0 1px 3px rgba(0,0,0,0.25)",padding:"0 4px",
-                      }}>{q.label}</span>
-                    </div>
-                  </button>
-                ))}
-                <ChevronRight style={{width:15,height:15,color:"#93C5FD",opacity:0.7,
-                  alignSelf:"flex-start",marginTop:14}}/>
+              <div className="env-row">
+                {QUALS.map((q,i) => <Envelope key={i} {...q}/>)}
+                <BigArrow/>
               </div>
             </div>
 
-            {/* divider */}
             <div style={{width:1,height:64,background:"#DBEAFE",flexShrink:0}}/>
 
             {/* action links */}
@@ -2107,22 +1915,16 @@ export default function Index() {
                 {lbl:"HR Login for New Membership", col:"#2563EB", bg:"#EFF6FF",  border:"#BFDBFE"},
                 {lbl:"Admin Login",                 col:"#64748B", bg:"#F8FAFC",  border:"#E2E8F0"},
               ].map((l,i) => (
-                <a key={i} href="#" style={{
-                  display:"flex",alignItems:"center",gap:8,textDecoration:"none",
-                  fontSize:12.5,fontWeight:700,color:l.col,
-                  padding:"8px 16px",borderRadius:11,
-                  background:l.bg,border:`1.5px solid ${l.border}`,
-                  boxSizing:"border-box",transition:"all 0.15s",
-                  boxShadow:"0 1px 4px rgba(0,0,0,0.05)",
-                }}
-                onMouseEnter={e=>{e.currentTarget.style.transform="translateX(4px)";e.currentTarget.style.boxShadow="0 4px 12px rgba(37,99,235,0.14)";}}
-                onMouseLeave={e=>{e.currentTarget.style.transform="none";e.currentTarget.style.boxShadow="0 1px 4px rgba(0,0,0,0.05)";}}>
+                <a key={i} href="#" style={{display:"flex",alignItems:"center",gap:8,textDecoration:"none",fontSize:12.5,fontWeight:700,color:l.col,padding:"8px 16px",borderRadius:11,background:l.bg,border:`1.5px solid ${l.border}`,boxSizing:"border-box",transition:"all 0.15s",boxShadow:"0 1px 4px rgba(0,0,0,0.05)"}}
+                  onMouseEnter={e=>{e.currentTarget.style.transform="translateX(4px)";e.currentTarget.style.boxShadow="0 4px 12px rgba(37,99,235,0.14)";}}
+                  onMouseLeave={e=>{e.currentTarget.style.transform="none";e.currentTarget.style.boxShadow="0 1px 4px rgba(0,0,0,0.05)";}}>
                   <ArrowRight style={{width:13,height:13,flexShrink:0}}/>
                   {l.lbl}
                   <ArrowRight style={{width:12,height:12,marginLeft:"auto",opacity:0.4}}/>
                 </a>
               ))}
             </div>
+
           </div>
         </footer>
 
