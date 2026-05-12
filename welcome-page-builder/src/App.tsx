@@ -7,9 +7,13 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import StudentProfile from "./pages/StudentProfile";
 import Index from "./pages/Index";
 import Assignment from "./pages/Assignment.tsx";
-import Listpersons from "./pages/Listpersons.tsx"; // added import
+import Listpersons from "./pages/Listpersons.tsx";
+import HRSignup from "./pages/Hrsignup.tsx";
+import HRVerify from "./pages/HRVerify.tsx";   // ← add
 import NotFound from "./pages/NotFound";
+import HRPayment from "./pages/Hrpayment.tsx";
 
+import HRDashboard from "./pages/Hrdashboard.tsx"
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -17,31 +21,17 @@ const App = () => (
     <TooltipProvider>
       <Toaster />
       <Sonner />
-
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Index />} />
-
-          {/* Student Profile Route */}
-          <Route
-            path="/studentprofile"
-            element={<StudentProfile />}
-          />
-
-          {/* Assignment Route */}
-          <Route
-            path="/assignment"
-            element={<Assignment />}
-          />
-
-          {/* Listpersons Route */}
-          <Route
-            path="/listpersons"
-            element={<Listpersons />}
-          />
-
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+          <Route path="/studentprofile" element={<StudentProfile />} />
+          <Route path="/assignment" element={<Assignment />} />
+          <Route path="/listpersons" element={<Listpersons />} />
+          <Route path="/signup" element={<HRSignup />} />
+          <Route path="/verify" element={<HRVerify />} />  {/* ← add */}
           <Route path="*" element={<NotFound />} />
+          <Route path="/hr/dashboard" element={<HRDashboard />} />
+          <Route path="/payment" element={<HRPayment />} />
         </Routes>
       </BrowserRouter>
     </TooltipProvider>
