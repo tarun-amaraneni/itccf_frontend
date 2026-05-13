@@ -12,7 +12,7 @@ import { Link, useNavigate, useLocation } from "react-router-dom";
 const QR_IMAGE_URL = "https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=upi://pay?pa=hr-portal@upi&pn=HR%20Portal&am=499&cu=INR";
 // ↑ Replace with your own static image URL, e.g. "/qr-code.png" or any CDN link
 
-const PAYMENT_AMOUNT = "₹499.00";
+const PAYMENT_AMOUNT = "₹2,000.00";
 const BASE = "http://192.168.0.6:8000/api";
 
 /* ═══════════════════════════════════════════════════════════
