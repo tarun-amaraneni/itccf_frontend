@@ -12,7 +12,7 @@ import HRSignup from "./pages/Hrsignup.tsx";
 import HRVerify from "./pages/HRVerify.tsx";   // ← add
 import NotFound from "./pages/NotFound";
 import HRPayment from "./pages/Hrpayment.tsx";
-
+import EmployerSignup from "./pages/EmployerSignup.tsx";
 import HRDashboard from "./pages/Hrdashboard.tsx"
 const queryClient = new QueryClient();
 
@@ -32,6 +32,7 @@ const App = () => (
           <Route path="*" element={<NotFound />} />
           <Route path="/hr/dashboard" element={<HRDashboard />} />
           <Route path="/payment" element={<HRPayment />} />
+          <Route path="/employer/signup" element={<EmployerSignup />} />
         </Routes>
       </BrowserRouter>
     </TooltipProvider>

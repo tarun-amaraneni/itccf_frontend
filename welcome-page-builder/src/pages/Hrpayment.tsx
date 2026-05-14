@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from "react";
+import paymentQR from "../media/image.png";
 import {
   ArrowLeft, CreditCard, CheckCircle, AlertCircle,
   Loader2, Copy, QrCode, ShieldCheck, ChevronRight,
@@ -9,7 +10,7 @@ import { Link, useNavigate, useLocation } from "react-router-dom";
 /* ═══════════════════════════════════════════════════════════
    CONFIG — swap QR image URL here anytime
 ═══════════════════════════════════════════════════════════ */
-const QR_IMAGE_URL = "https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=upi://pay?pa=hr-portal@upi&pn=HR%20Portal&am=499&cu=INR";
+// const QR_IMAGE_URL = "https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=upi://pay?pa=hr-portal@upi&pn=HR%20Portal&am=499&cu=INR";
 // ↑ Replace with your own static image URL, e.g. "/qr-code.png" or any CDN link
 
 const PAYMENT_AMOUNT = "₹2,000.00";
@@ -28,7 +29,7 @@ export default function HRPayment() {
   const [error, setError] = useState("");
   const [copied, setCopied] = useState(false);
 
-  const upiId = "hr-portal@upi"; // shown under QR
+  const upiId = "tsinfomedia@oksbi"; // shown under QR
 
   const handleCopy = () => {
     navigator.clipboard.writeText(upiId);
@@ -160,15 +161,15 @@ export default function HRPayment() {
                 <div className="absolute bottom-2 right-2 w-5 h-5 border-b-2 border-r-2 border-blue-500 rounded-br-lg pointer-events-none" />
 
                 <img
-                  src={QR_IMAGE_URL}
+                  src={paymentQR}
                   alt="Payment QR Code"
                   width={220}
                   height={220}
                   className="rounded-xl block"
-                  onError={e => {
-                    (e.target as HTMLImageElement).src =
-                      "https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=PAYMENT";
-                  }}
+                  // onError={e => {
+                  //   (e.target as HTMLImageElement).src =
+                  //     "https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=PAYMENT";
+                  // }}
                 />
               </div>
               <p className="text-[11px] font-bold text-blue-400 tracking-wide">Scan with any UPI app</p>
